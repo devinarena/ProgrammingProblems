@@ -70,7 +70,6 @@ const solve = async (req, res) => {
     let result;
     try {
       result = sandbox[problem.function](...test.input);
-      console.log(...test.input);
     } catch (e) {
       return res.json({
         success: false,
