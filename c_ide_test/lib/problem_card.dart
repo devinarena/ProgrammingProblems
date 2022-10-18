@@ -21,6 +21,11 @@ class _ProblemCardState extends State<ProblemCard> {
             style: const TextStyle(fontSize: 20)),
         subtitle: Text(widget.problem.shortDesc,
             style: const TextStyle(fontSize: 20)),
+        trailing: Column(children: [
+          Icon(Icons.stars, color: Colors.yellow[800]),
+          Text("${widget.problem.points} pts",
+              style: TextStyle(fontSize: 20, color: Colors.yellow[800]))
+        ]),
         onTap: () {
           Navigator.push(
             context,

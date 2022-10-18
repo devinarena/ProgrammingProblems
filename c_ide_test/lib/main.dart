@@ -6,6 +6,7 @@ import 'package:c_ide_test/problem.dart';
 import 'package:c_ide_test/problem_card.dart';
 import 'package:c_ide_test/solve_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 void main() {
   runApp(const ProgrammingProblems());
@@ -21,7 +22,14 @@ class ProgrammingProblems extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.red,
           textTheme: Theme.of(context).textTheme.apply(fontSizeFactor: 1.25)),
-      darkTheme: ThemeData(primaryColor: Colors.red),
+      darkTheme: ThemeData(
+          primarySwatch: Colors.red,
+          brightness: Brightness.dark,
+          textTheme: Theme.of(context).textTheme.apply(
+              fontSizeFactor: 1.25,
+              decorationColor: Colors.white,
+              displayColor: Colors.white70,
+              bodyColor: Colors.white)),
       themeMode: ThemeMode.system,
       home: HomePage(),
     );
@@ -29,7 +37,7 @@ class ProgrammingProblems extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
-  late Future<List<Problem>> problems;
+  Future<List<Problem>>? problems;
 
   HomePage({super.key});
 
@@ -41,7 +49,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    widget.problems = Database.fetchProblems();
+    setState(() {
+      widget.problems = Database.fetchProblems();
+    });
   }
 
   @override
@@ -53,30 +63,35 @@ class _HomePageState extends State<HomePage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text("Programming Problems", style: TextStyle(fontSize: 30)),
-            const Text("Solved: 0 / 1", style: TextStyle(fontSize: 24)),
-            const SizedBox(height: 10),
-            FutureBuilder<List<Problem>>(
-              future: widget.problems,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      return ProblemCard(
-                        problem: snapshot.data![index],
-                      );
-                    },
-                  );
-                } else if (snapshot.hasError) {
-                  return Text("${snapshot.error}");
-                }
-                return const CircularProgressIndicator();
-              },
+            const Expanded(
+                flex: 1,
+                child: Text("Programming Problems",
+                    style: TextStyle(fontSize: 30))),
+            Expanded(
+              flex: 9,
+              child: FutureBuilder<List<Problem>>(
+                future: widget.problems,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        return ProblemCard(
+                          problem: snapshot.data![index],
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text("${snapshot.error}");
+                  }
+                  return const Center(child: CircularProgressIndicator());
+                },
+              ),
             ),
           ],
         ),
