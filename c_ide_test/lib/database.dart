@@ -8,16 +8,18 @@ class Database {
   static const dbURL = "10.0.0.68:5000";
 
   static Future<List<Problem>> fetchProblems() async {
-    final response = await http.get(Uri.parse('http://$dbURL/problems'));
-    if (response.statusCode == 200) {
-      List<Problem> problems = [];
-      for (var problem in jsonDecode(response.body)) {
-        problems.add(Problem.fromJson(problem));
+    try {
+      final response = await http.get(Uri.http(dbURL, "/problems"));
+      if (response.statusCode == 200) {
+        List<dynamic> problems = jsonDecode(response.body);
+        return problems.map((e) => Problem.fromJson(e)).toList();
+      } else {
+        print("Failed to load problems");
       }
-      return problems;
-    } else {
-      throw Exception('Failed to load problem');
+    } catch (e) {
+      print("Failed to load problems");
     }
+    return [];
   }
 
   static Future<dynamic> submitProblem(

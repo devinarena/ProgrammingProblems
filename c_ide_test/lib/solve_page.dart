@@ -86,7 +86,7 @@ class _SolvePageState extends State<SolvePage> {
             children: [
               MarkdownBody(
                   data: "# ${widget.problem.number}. ${widget.problem.title}"),
-              MarkdownBody(data: "### ${widget.problem.description}"),
+              MarkdownBody(data: "${widget.problem.description}"),
               const Divider(height: 30, thickness: 1.0),
               const MarkdownBody(data: "## Solution"),
               TextFormField(

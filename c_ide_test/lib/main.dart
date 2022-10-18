@@ -37,8 +37,6 @@ class ProgrammingProblems extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
-  Future<List<Problem>>? problems;
-
   HomePage({super.key});
 
   @override
@@ -46,12 +44,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Future<List<Problem>>? problems;
+  int numProblems = 0;
+
   @override
   void initState() {
     super.initState();
+    loadProblems();
+  }
+
+  ///
+  /// Loads problems and other fields from the database.
+  ///
+  void loadProblems() {
     setState(() {
-      widget.problems = Database.fetchProblems();
+      problems = Database.fetchProblems();
     });
+    if (problems != null) {
+      problems!.then((problems) => {numProblems = problems.length});
+    }
   }
 
   @override
@@ -67,27 +78,51 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Expanded(
-                flex: 1,
-                child: Text("Programming Problems",
-                    style: TextStyle(fontSize: 30))),
+            Expanded(
+              flex: 1,
+              child: Column(
+                children: [
+                  const Text("Programming Problems",
+                      style: TextStyle(fontSize: 30)),
+                  Text("Solved: 0 / $numProblems",
+                      style: const TextStyle(fontSize: 24)),
+                ],
+              ),
+            ),
             Expanded(
               flex: 9,
               child: FutureBuilder<List<Problem>>(
-                future: widget.problems,
+                future: problems,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        return ProblemCard(
-                          problem: snapshot.data![index],
-                        );
-                      },
-                    );
+                    if (snapshot.data!.isEmpty) {
+                      return Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Text("Could not load problems"),
+                            const SizedBox(height: 10),
+                            ElevatedButton(
+                                onPressed: () {
+                                  loadProblems();
+                                },
+                                child: const Icon(Icons.refresh))
+                          ],
+                        ),
+                      );
+                    } else {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return ProblemCard(
+                            problem: snapshot.data![index],
+                          );
+                        },
+                      );
+                    }
                   } else if (snapshot.hasError) {
-                    return Text("${snapshot.error}");
+                    return const Center(child: Text("Could not load problems"));
                   }
                   return const Center(child: CircularProgressIndicator());
                 },
