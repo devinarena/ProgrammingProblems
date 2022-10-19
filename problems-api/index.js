@@ -89,9 +89,9 @@ const solve = async (req, res) => {
           success: false,
           passed: passed,
           total: problem.test_cases.length,
-          input: `${test.input}`,
+          input: test.input,
           output: `${logs[logs.length - 1]}`,
-          expected: `${test.output}`,
+          expected: test.output,
         });
       }
     } else {
@@ -100,9 +100,9 @@ const solve = async (req, res) => {
           success: false,
           passed: passed,
           total: problem.test_cases.length,
-          input: `${test.input}`,
-          output: `${result}`,
-          expected: `${test.output}`,
+          input: test.input,
+          output: result,
+          expected: test.output,
         });
       }
     }

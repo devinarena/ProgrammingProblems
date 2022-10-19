@@ -43,7 +43,7 @@ const queryProblems = async () => {
     const database = client.db("problems");
     const collection = database.collection("problems");
 
-    const problems = await collection.find().toArray();
+    const problems = await collection.find().sort({ number: 1 }).toArray();
 
     return problems;
   } catch (err) {

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:c_ide_test/database.dart';
 import 'package:c_ide_test/problem.dart';
 import 'package:c_ide_test/problem_card.dart';
+import 'package:c_ide_test/save_data.dart';
 import 'package:c_ide_test/solve_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -50,6 +51,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      SaveData.loadSave();
+    });
     loadProblems();
   }
 
@@ -61,7 +65,9 @@ class _HomePageState extends State<HomePage> {
       problems = Database.fetchProblems();
     });
     if (problems != null) {
-      problems!.then((problems) => {numProblems = problems.length});
+      problems!.then((problems) => setState(() {
+            numProblems = problems.length;
+          }));
     }
   }
 
@@ -84,13 +90,26 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   const Text("Programming Problems",
                       style: TextStyle(fontSize: 30)),
-                  Text("Solved: 0 / $numProblems",
-                      style: const TextStyle(fontSize: 24)),
+                  SaveData.getSave["problemsSolved"] != null
+                      ? Text(
+                          "Solved: ${SaveData.getSave["problemsSolved"].length} / $numProblems",
+                          style: const TextStyle(fontSize: 20))
+                      : const CircularProgressIndicator(),
+                  SaveData.getSave["points"] != null
+                      ? Column(
+                          children: [
+                            Icon(Icons.stars, color: Colors.yellow[800]),
+                            Text("Points ${SaveData.getSave["points"]}",
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.yellow[800]))
+                          ],
+                        )
+                      : const CircularProgressIndicator(),
                 ],
               ),
             ),
             Expanded(
-              flex: 9,
+              flex: 5,
               child: FutureBuilder<List<Problem>>(
                 future: problems,
                 builder: (context, snapshot) {
@@ -117,6 +136,14 @@ class _HomePageState extends State<HomePage> {
                         itemBuilder: (context, index) {
                           return ProblemCard(
                             problem: snapshot.data![index],
+                            onTap: () {
+                              Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => SolvePage(
+                                              problem: snapshot.data![index])))
+                                  .then((value) => setState(() {}));
+                            },
                           );
                         },
                       );
