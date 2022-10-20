@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:c_ide_test/problem.dart';
 
 class Database {
-  static const dbURL = "10.0.0.68:5000";
+  // static const dbURL = "10.0.0.68:5000";
+  static const dbURL = "73.156.33.157:5000";
 
   static Future<List<Problem>> fetchProblems() async {
     try {

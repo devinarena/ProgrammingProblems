@@ -3,8 +3,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SaveData {
   static final dynamic _save = {};
+  static bool loaded = false;
 
   static get getSave => _save;
+  static get isLoaded => loaded;
 
   static void loadSave() async {
     final prefs = await SharedPreferences.getInstance();
@@ -16,6 +18,7 @@ class SaveData {
     _save['problemsSolved'] = problemsSolved;
     _save['problemsSolved'] = List<String>.empty(growable: true);
     _save['points'] = points;
+    loaded = true;
   }
 
   static void save() async {

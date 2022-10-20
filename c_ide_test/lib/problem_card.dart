@@ -3,6 +3,7 @@ import 'package:c_ide_test/save_data.dart';
 import 'package:c_ide_test/solve_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'color_ext.dart';
 
 class ProblemCard extends StatefulWidget {
   final Problem problem;
@@ -35,6 +36,10 @@ class _ProblemCardState extends State<ProblemCard> {
               style: TextStyle(fontSize: 20, color: Colors.yellow[800]))
         ]),
         onTap: widget.onTap,
+        tileColor: (SaveData.getSave["problemsSolved"] != null &&
+                SaveData.getSave["problemsSolved"].contains(widget.problem.id))
+            ? Theme.of(context).cardColor
+            : Theme.of(context).cardColor.darken(0.1),
       ),
     );
   }
