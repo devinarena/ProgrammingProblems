@@ -1,3 +1,4 @@
+import 'package:c_ide_test/code_editor.dart';
 import 'package:c_ide_test/database.dart';
 import 'package:c_ide_test/main.dart';
 import 'package:c_ide_test/problem.dart';
@@ -16,7 +17,7 @@ class SolvePage extends StatefulWidget {
 }
 
 class _SolvePageState extends State<SolvePage> {
-  late TextEditingController _controller;
+  late final TextEditingController _controller;
   bool _pressedSolve = false;
 
   @override
@@ -102,14 +103,7 @@ class _SolvePageState extends State<SolvePage> {
               MarkdownBody(data: widget.problem.description),
               const Divider(height: 30, thickness: 1.0),
               const MarkdownBody(data: "## Solution"),
-              TextFormField(
-                controller: _controller,
-                maxLines: null,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Solution',
-                ),
-              ),
+              CodeEditor(widget.problem, _controller),
               const SizedBox(
                 height: 12,
               ),

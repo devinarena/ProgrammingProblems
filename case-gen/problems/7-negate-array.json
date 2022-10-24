@@ -1,0 +1,24 @@
+{
+    "_id": {
+      "$oid": "63549a2e667840f4ab6466cb"
+    },
+    "number": 7,
+    "title": "Negate Array",
+    "short_desc": "Given an array, \"negate\" it.",
+    "description": "Given an array *arr*, write a function to return its **negation**.  \nDefine the array **negation** to simply be the array with each element multiplied by -1.\n## Examples\n```sum([1, 2, 3]) -> [-1, -2, -3]```  \n```sum([0]) -> [0]```\n## Constraints\n* 1 <= *arr*.length <= 1000.\n* -1000 <= *arr*[i] <= 1000.",
+    "points": 2,
+    "function": "negate",
+    "start_code": "function negate(arr) {\n\n}",
+    "test_print": false,
+    "test_cases": [
+        {
+            "input": [[1, 2, 3]],
+            "output": [-1, -2, -3]
+        },
+        {
+            "input": [[0]],
+            "output": [0]
+        }
+    ]
+  }
+  

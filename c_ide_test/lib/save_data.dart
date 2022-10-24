@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:c_ide_test/problem.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -8,7 +10,7 @@ class SaveData {
   static get getSave => _save;
   static get isLoaded => loaded;
 
-  static void loadSave() async {
+  static Future<void> loadSave() async {
     final prefs = await SharedPreferences.getInstance();
 
     final List<String> problemsSolved = prefs.getStringList('problemsSolved') ??
@@ -18,6 +20,9 @@ class SaveData {
     _save['problemsSolved'] = problemsSolved;
     _save['problemsSolved'] = List<String>.empty(growable: true);
     _save['points'] = points;
+    _save['totalProblems'] = prefs.getInt('totalProblems') ?? 1;
+    _save['totalPoints'] = prefs.getInt('totalPoints') ?? 0;
+    _save['theme'] = prefs.getString('theme') ?? 'system';
     loaded = true;
   }
 
@@ -25,7 +30,10 @@ class SaveData {
     final prefs = await SharedPreferences.getInstance();
 
     prefs.setStringList('problemsSolved', _save['problemsSolved']);
+    prefs.setInt('totalProblems', _save['totalProblems']);
     prefs.setInt('points', _save['points']);
+    prefs.setInt('totalPoints', _save['totalPoints']);
+    prefs.setString('theme', _save['theme']);
   }
 
   static Future<bool> solveProblem(Problem problem) async {
