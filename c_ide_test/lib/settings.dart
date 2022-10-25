@@ -34,35 +34,41 @@ class _SettingsState extends State<Settings> {
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 30.0)),
                 const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("Theme: ", style: TextStyle(fontSize: 24.0)),
-                    const SizedBox(width: 100),
-                    DropdownButton(
-                      value: SaveData.getSave["theme"] ?? "system",
-                      items: const <DropdownMenuItem>[
-                        DropdownMenuItem(
-                          value: "light",
-                          child: Text("Light"),
-                        ),
-                        DropdownMenuItem(
-                          value: "dark",
-                          child: Text("Dark"),
-                        ),
-                        DropdownMenuItem(
-                          value: "system",
-                          child: Text("System"),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Theme: ", style: TextStyle(fontSize: 24.0)),
+                        DropdownButton(
+                          value: SaveData.getSave["theme"] ?? "system",
+                          items: const <DropdownMenuItem>[
+                            DropdownMenuItem(
+                              value: "light",
+                              child: Text("Light"),
+                            ),
+                            DropdownMenuItem(
+                              value: "dark",
+                              child: Text("Dark"),
+                            ),
+                            DropdownMenuItem(
+                              value: "system",
+                              child: Text("System"),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              ProgrammingProblems.themeProvider!
+                                  .setTheme(value);
+                            });
+                          },
                         ),
                       ],
-                      onChanged: (value) {
-                        setState(() {
-                          ProgrammingProblems.themeProvider!.setTheme(value);
-                        });
-                      },
                     ),
-                  ],
-                )
+                  ),
+                ),
               ],
             ),
           ),

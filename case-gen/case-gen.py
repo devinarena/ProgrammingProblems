@@ -1,4 +1,5 @@
 
+from operator import neg
 import random
 
 def max_array():
@@ -103,10 +104,34 @@ def array_diff():
     f.write(str(cases))
     f.close()
 
+def negate_array():
+    num_cases = 100
+    input_size = (0, 1000)
+    input_range = (-1000, 1000)
+
+    cases = []
+
+    for i in range(num_cases):
+        case = {}
+        arr = []
+        ans = []
+        for j in range(i):
+            num = random.randint(input_range[0], input_range[1])
+            ans.append(-num)
+            arr.append(num)
+        case["input"] = [arr]
+        case["output"] = ans
+        
+        cases.append(case)
+    
+    f = open("cases.txt", "w")
+    f.write(str(cases))
+    f.close()
+
 def main():
     random.seed(None)
     
-    array_diff()
+    negate_array()
 
 if __name__ == "__main__":
     main()

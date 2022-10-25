@@ -40,7 +40,7 @@ class _ProgrammingProblemsState extends State<ProgrammingProblems> {
       themeMode: SaveData.isLoaded
           ? ThemeMode.values.firstWhere(
               (element) => element.name == SaveData.getSave["theme"])
-          : ThemeMode.system,
+          : ThemeMode.dark,
       home: const HomePage(),
     );
   }
@@ -62,7 +62,10 @@ class _HomePageState extends State<HomePage>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    SaveData.loadSave().then((_) => setState(() {}));
+    SaveData.loadSave().then((_) => setState(() {
+          ProgrammingProblems.themeProvider!
+              .setTheme(SaveData.getSave["theme"]);
+        }));
     loadProblems();
   }
 

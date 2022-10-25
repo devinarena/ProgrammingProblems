@@ -48,7 +48,7 @@ class _ProblemsState extends State<Problems> {
                       minHeight: 16.0,
                       semanticsLabel: "Progress",
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 5),
                     SaveData.getSave["points"] != null
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -61,6 +61,7 @@ class _ProblemsState extends State<Problems> {
                             ],
                           )
                         : const CircularProgressIndicator(),
+                    const SizedBox(height: 5),
                   ],
                 )
               : const LinearProgressIndicator(),
