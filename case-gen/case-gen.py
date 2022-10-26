@@ -128,10 +128,35 @@ def negate_array():
     f.write(str(cases))
     f.close()
 
+def is_even():
+    num_cases = 100
+    input_range = (1, 10e9)
+
+    cases = []
+
+    for i in range(num_cases):
+        case = {}
+        num = random.randint(input_range[0], input_range[1])
+        case["input"] = [num]
+        sum = 0
+        while num > 0:
+            digit = num % 10
+            sum += digit
+            num = num // 10
+        if sum % 2 == 0:
+            case["output"] = "true"
+        else:
+            case["output"] = "false"
+        cases.append(case)
+    
+    f = open("cases.txt", "w")
+    f.write(str(cases))
+    f.close()
+
 def main():
     random.seed(None)
     
-    negate_array()
+    is_even()
 
 if __name__ == "__main__":
     main()
